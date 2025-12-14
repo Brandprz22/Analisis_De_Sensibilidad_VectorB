@@ -79,7 +79,11 @@ class CambioVectorB:
         factible = numpy.all(Xb_nueva >= 0)
 
         x_completa = numpy.zeros(self.n + self.m)
-        x_completa[self.col_basic] = Xb_nueva
+        # Construir x_completa usando el orden correcto por fila
+        for i in range(self.m):
+            j = self.basic_per_row[i]
+            x_completa[j] = Xb_nueva[i]
+            
         x_vars_orig = x_completa[:self.n]
 
         new_z = float(self.c_ext @ x_completa)
@@ -98,5 +102,6 @@ class CambioVectorB:
             "basic_per_row": self.basic_per_row,  # qué variable es básica en cada fila
             "cB": self.cB,  # vector de costos de básicas (orden filas)
         }
+
 
         return dic_respuesta
